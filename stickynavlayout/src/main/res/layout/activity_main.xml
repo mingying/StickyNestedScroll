@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.chl.stickynav.MainActivity">
 
-    <com.chl.stickynav.widget.StickyNavLayout2
+    <com.chl.stickynav.widget.StickyNavLayout
         android:id="@+id/app_detail_stickylayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,28 +16,26 @@
             android:id="@+id/app_detail_topview"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:background="@mipmap/images">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:textSize="20dp"
-                android:text="软件介绍"/>
         </LinearLayout>
 
         <com.chl.stickynav.widget.SimpleViewPagerIndicator
             android:id="@+id/app_detail_nav"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/colorAccent"/>
+            android:background="@color/pink"/>
 
         <android.support.v4.view.ViewPager
             android:id="@+id/app_detail_pager"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    </com.chl.stickynav.widget.StickyNavLayout2>
+    </com.chl.stickynav.widget.StickyNavLayout>
+
+    <include
+        layout="@layout/com_title_layout"/>
 
 
 </RelativeLayout>

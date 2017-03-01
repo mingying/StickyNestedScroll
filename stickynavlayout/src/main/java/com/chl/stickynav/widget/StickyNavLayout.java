@@ -1,12 +1,12 @@
 package com.chl.stickynav.widget;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -18,6 +18,7 @@ import android.widget.ScrollView;
 
 import com.chl.stickynav.MainPagerAdapter;
 import com.chl.stickynav.R;
+import com.chl.stickynav.Util;
 
 /**
  * Created by caihanlin on 17/2/24.
@@ -32,6 +33,8 @@ public class StickyNavLayout extends LinearLayout {
     private ViewPager mPager;
 
     private ViewGroup mInnerScrollView;
+
+    private View mComTitleLayout;
 
     private int mTopViewHeight;
 
@@ -49,6 +52,8 @@ public class StickyNavLayout extends LinearLayout {
 
     private boolean isInControl = false;
 
+    private int mComTitleHeight;
+
     public StickyNavLayout(Context context) {
         super(context);
     }
@@ -63,6 +68,8 @@ public class StickyNavLayout extends LinearLayout {
 
         mOverScroller = new OverScroller(context);
         mVelocityTracker = VelocityTracker.obtain();
+
+        mComTitleHeight = (int)Util.dp2px(context, 50f);
 
     }
 
@@ -150,7 +157,6 @@ public class StickyNavLayout extends LinearLayout {
                 float dy = y - mLastY;
                 if (Math.abs(dy) > mTouchSlop) {
                     if (mInnerScrollView instanceof ScrollView || mInnerScrollView instanceof NestedScrollView) {
-                        Log.e("chl", "lanjie???????? ＝＝ " + isTopHidden);
                         if (!isTopHidden || (mInnerScrollView.getScrollY() == 0 && isTopHidden && dy > 0)) {
 
                             return true;
@@ -211,7 +217,6 @@ public class StickyNavLayout extends LinearLayout {
                     mLastY = y;
                     // 如果topView隐藏，且上滑动时，则改变当前事件为ACTION_DOWN
                     if (isTopHidden && dy < 0) {
-                        Log.e("chl", "=== " + (mInnerScrollView.getScrollY() == mTopViewHeight ));
                         isInControl = false;
                         event.setAction(MotionEvent.ACTION_DOWN);
                         dispatchTouchEvent(event);
@@ -242,7 +247,7 @@ public class StickyNavLayout extends LinearLayout {
     }
 
     private void fling(int velocatyY) {
-        mOverScroller.fling(0, getScrollY(), 0, velocatyY, 0, 0, 0, mTopViewHeight);
+        mOverScroller.fling(0, getScrollY(), 0, velocatyY, 0, 0, 0, mTopViewHeight- mComTitleHeight);
         invalidate();
     }
 
@@ -260,15 +265,15 @@ public class StickyNavLayout extends LinearLayout {
             y = 0;
         }
 
-        if (y > mTopViewHeight) {
-            y = mTopViewHeight;
+        if (y > mTopViewHeight- mComTitleHeight) {
+            y = mTopViewHeight- mComTitleHeight;
         }
 
         if (getScaleY() != y) {
             super.scrollTo(x, y);
         }
-
-        isTopHidden = getScrollY() == mTopViewHeight;
+        updateTitleBackGround();
+        isTopHidden = getScrollY() == mTopViewHeight - mComTitleHeight;
     }
 
     private void getCurScrollView() {
@@ -291,6 +296,18 @@ public class StickyNavLayout extends LinearLayout {
             mVelocityTracker.recycle();
             mVelocityTracker = null;
         }
+    }
+
+    public void setComTitleLayout(View comTitleLayout) {
+        this.mComTitleLayout = comTitleLayout;
+    }
+
+    private void updateTitleBackGround() {
+        if (mComTitleLayout != null) {
+            float fraction = (float) (getScrollY() * 1.0 / (mTopViewHeight - mComTitleHeight));
+            mComTitleLayout.setBackgroundColor(Color.argb((int) (fraction * 255), 239, 186, 206));
+        }
+
     }
 
 }

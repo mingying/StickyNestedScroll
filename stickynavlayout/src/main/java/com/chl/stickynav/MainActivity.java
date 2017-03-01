@@ -10,6 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 
 import com.chl.stickynav.widget.SimpleViewPagerIndicator;
+import com.chl.stickynav.widget.StickyNavLayout;
+import com.chl.stickynav.widget.StickyNavLayout2;
 
 import java.util.ArrayList;
 
@@ -37,6 +39,9 @@ public class MainActivity extends AppCompatActivity {
         View scrollView  = LayoutInflater.from(this).inflate(R.layout.main_scroll_layout, null);
         View recycleView = LayoutInflater.from(this).inflate(R.layout.main_listview_layout, null);
         mRecyclerView = (RecyclerView) recycleView.findViewById(R.id.main_recycle_view);
+        StickyNavLayout stickyNavLayout = (StickyNavLayout) findViewById(R.id.app_detail_stickylayout);
+        View titleLayout = findViewById(R.id.com_title_layout);
+        stickyNavLayout.setComTitleLayout(titleLayout);
 
         ArrayList<String> list = new ArrayList<>();
         list.add("JAVA");
